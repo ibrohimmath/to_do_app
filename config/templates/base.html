@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source Sans Pro">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <!-- <link rel="stylesheet" href="../static/css/styles.css"> -->
+        <title>{% block title %}To-Do App{% endblock %}</title>
+    </head>
+    <body>
+        <nav>
+            <span id="logo">ToDo List</span>
+            <ul>
+                {% if request.user.is_authenticated %}
+                    <li id="user">Welcome, {{ request.user }}</li>
+                    <li id="login-logout"><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li id="login-logout"><a href="{% url 'login' %}">Log In</a></li>
+                    <li id="signup"><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </body>
+</html>

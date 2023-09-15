@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1 id="todo">ToDo List</h1>
+        <div id="main">
+            <div id="tasks">
+                    {% for task in object_list %}
+                        <div class="task">
+                            {% if task.done == 1 %}
+                                <span style="background: green; color: white;">{{ task.description }}</span>
+                            {% elif not task.has_chance %}
+                                <span style='background: red; color: white; margin-right: 125px;'>{{ task.description }}</span>
+                            {% else %}
+                                <span>{{ task.description }}</span>
+                            {% endif %}
+                            {% if task.done == 1 %}
+                                <span class="status-done">Completed</span>
+                            {% elif task.has_chance %}
+                                <span class="status"><a href="{% url 'change-task' task.id %}">incomplete</a></span>
+                            {% endif %}
+                            <span class="deadline">{{ task.deadline }}</span>
+                            <a href="{% url 'delete-task' task.id %}" class="trash"><i class="fa fa-trash" style="color: red;"></i></a>
+                        </div>
+                    {% endfor %}
+            </div>
+            <form action="/new/" method="POST">
+                {% csrf_token %}
+                <div id="new-task">
+                    <textarea name="description" id="task-desc" cols="30" rows="10" placeholder="New Task" required></textarea>
+                    <input type="date" id="date" name="deadline" required>
+                    <input type="submit" id="buttn" value="Add">
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+
